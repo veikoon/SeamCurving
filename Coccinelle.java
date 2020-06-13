@@ -40,7 +40,7 @@ public class Coccinelle{
 		List<int[]> trajetParcouru = new ArrayList<int[]>();
 		int positionDerniereFeuille = findPositionInTab(tab[0], max);
 		//Recherche du trajet parcouru par la coccinelle
-		parcours(tab, 0, positionDerniereFeuille, trajetParcouru);
+		parcours(tabtri, 0, positionDerniereFeuille, trajetParcouru);
 		//Ajout "manuel" de la case d'arrivé de la coccinelle dans le trajet parcouru
 		trajetParcouru.add(new int[] {tab.length - 1, positionDerniereFeuille});
 
