@@ -40,7 +40,7 @@ public class Coccinelle{
 		List<int[]> trajetParcouru = new ArrayList<int[]>();
 		int positionDerniereFeuille = findPositionInTab(tab[0], max);
 		//Recherche du trajet parcouru par la coccinelle
-		parcours(tab, 0, positionDerniereFeuille, trajetParcouru);
+		parcours(tabtri, 0, positionDerniereFeuille, trajetParcouru);
 		//Ajout "manuel" de la case d'arrivé de la coccinelle dans le trajet parcouru
 		trajetParcouru.add(new int[] {tab.length - 1, positionDerniereFeuille});
 
@@ -84,7 +84,7 @@ public class Coccinelle{
 				//On somme les pucerons potentiellement précédemment ingérés par la coccinelle avec ceux présent sur la case suivante que peut atteindre la coccinelle
 				//Et qui possède donc le maximum de puceron, puis on ajoute cette somme sur la fameuse case dans le tableau trié
 				if (i!= 0 && j <= pTabTri[i-1].length - 1) pTabTri[i - 1][j] = pTab[i - 1][j] + temp;
-			}			
+			}
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Coccinelle{
 
 	//ATTENTION fonction récursive !
 	public static void parcours(int[][] pTab, int l, int c, List<int[]> pTrajetParcouru) {
-		//Si la fonction à atteint la dernière ligne de cases on stop la récursivité 
+		//Si la fonction à atteint la dernière ligne de cases on stop la récursivité
 		if (l >= pTab.length - 1) return;
 		//On stock les valeurs des variables correspondant à la futur case
 		int temp = pTab[l + 1][c];
@@ -104,7 +104,7 @@ public class Coccinelle{
 
 		//On vérifie que l'on ne se trouve pas aux extrémité du tableau afin d'éviter un Array Index Out Of Bound Exception
 		//Puis on vérifie la valeur des cases adjacentes afin de savoir la quelle possède le plus grand nombre de pucerons
-		//Même système que pour le tri du tableau à la différence qu'il faut sauvegarder la position des cases possèdant le maximum de pucerons 
+		//Même système que pour le tri du tableau à la différence qu'il faut sauvegarder la position des cases possèdant le maximum de pucerons
 		if (c != 0 && temp <= pTab[l + 1][c - 1]) {
 			temp = pTab[l + 1][c - 1];
 			tempC = c - 1;
