@@ -3,13 +3,12 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CarvingProcess{
 
 	private int width;
 	private int height;
-	private List<List<Double>> energy;
+	private double[][] energy;
 	private BufferedImage image;
 
 
@@ -56,13 +55,10 @@ public class CarvingProcess{
 
 	public void getEnergyTab(){
 		int[][][] pixels = getPixels();
-		this.energy =  new ArrayList<List<Double>>();
-		for( int i = 0; i < this.width; i++ ){
-			this.energy.add(new ArrayList<Double>());
-			for( int j = 0; j < this.height; j++ ){
-				this.energy.get(i).add(getEnergy(i, j, pixels));
-			}
-		}
+		this.energy = new double[this.width][this.height];
+		for( int i = 0; i < this.width; i++ )
+			for( int j = 0; j < this.height; j++ )
+				energy[i][j] = getEnergy(i, j, pixels);
 	}
 
 	public double getEnergy(int i, int j, int[][][] pixels){
@@ -83,19 +79,19 @@ public class CarvingProcess{
 
 			int[] temp_parcourt = new int[this.width];
 			temp_parcourt[0] = i;
-			double temp_total =  this.energy.get(0).get(i);
+			double temp_total =  energy[0][i];
 
 			for( int j = 0; j < this.width - 1; j++ ){
 
 				int temp_pos = temp_parcourt[j];
-				double temp_energy = this.energy.get(j + 1).get(temp_pos);
+				double temp_energy = energy[j + 1][temp_pos];
 
-				if (temp_parcourt[j] - 1 >= 0 && this.energy.get(j + 1).get(temp_pos - 1) < temp_energy) {
-					temp_energy = this.energy.get(j + 1).get(temp_pos - 1);
+				if (temp_parcourt[j] - 1 >= 0 && energy[j + 1][temp_pos - 1] < temp_energy) {
+					temp_energy = energy[j + 1][temp_pos - 1];
 					temp_pos = temp_parcourt[j] - 1;
 				}
-				if (temp_parcourt[j] + 1 < this.height && this.energy.get(j + 1).get(temp_pos + 1) < temp_energy) {
-					temp_energy = this.energy.get(j + 1).get(temp_pos + 1);
+				if (temp_parcourt[j] + 1 < this.height && energy[j + 1][temp_pos + 1] < temp_energy) {
+					temp_energy = energy[j + 1][temp_pos + 1];
 					temp_pos = temp_parcourt[j] + 1;
 				}
 				temp_total += temp_energy;
@@ -119,19 +115,19 @@ public class CarvingProcess{
 
 			int[] temp_parcourt = new int[this.height];
 			temp_parcourt[0] = i;
-			double temp_total =  this.energy.get(i).get(0);
+			double temp_total =  energy[i][0];
 
 			for( int j = 0; j < this.height - 1; j++ ){
 
 				int temp_pos = temp_parcourt[j];
-				double temp_energy = this.energy.get(temp_pos).get(j + 1);
+				double temp_energy = energy[temp_pos][j + 1];
 
-				if (temp_parcourt[j] - 1 >= 0 && this.energy.get(temp_pos - 1).get(j + 1) < temp_energy) {
-					temp_energy = this.energy.get(temp_pos - 1).get(j + 1);
+				if (temp_parcourt[j] - 1 >= 0 && energy[temp_pos - 1][j + 1] < temp_energy) {
+					temp_energy = energy[temp_pos - 1][j + 1];
 					temp_pos = temp_parcourt[j] - 1;
 				}
-				if (temp_parcourt[j] + 1 < this.width && this.energy.get(temp_pos + 1).get(j + 1) < temp_energy) {
-					temp_energy = this.energy.get(temp_pos + 1).get(j + 1);
+				if (temp_parcourt[j] + 1 < this.width && energy[temp_pos + 1][j + 1] < temp_energy) {
+					temp_energy = energy[temp_pos + 1][j + 1];
 					temp_pos = temp_parcourt[j] + 1;
 				}
 				temp_total += temp_energy;
@@ -146,6 +142,23 @@ public class CarvingProcess{
 		return parcourt;
 	}
 
+
+	public void saveImage(){
+
+
+
+		BufferedImage new_image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+		for (int i=0; i < 100; i++) {
+			for (int j=0; j < 100; j++) {
+				new_image.setRGB(i, j, this.image.getRGB(i, j));
+			}
+		}
+
+		try{
+			File f = new File("Finalcat.jpg");
+			ImageIO.write(new_image, "jpg", f);
+		}catch(Exception e){}
+	}
 
 
 //########################################################################################
@@ -162,7 +175,7 @@ public class CarvingProcess{
 		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		for( int i = 0; i < this.width; i++ ){
 			for( int j = 0; j < this.height; j++ ){
-				if(this.energy.get(i).get(j) > 50) image.setRGB(i, j, white.getRGB());
+				if(this.energy[i][j] > 50) image.setRGB(i, j, white.getRGB());
 				else image.setRGB(i, j, black.getRGB());
 			}
 			image.setRGB(i, hori[i], red.getRGB());
@@ -180,7 +193,7 @@ public class CarvingProcess{
 		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		for( int i = 0; i < this.width; i++ ){
 			for( int j = 0; j < this.height; j++ ){
-				if(this.energy.get(i).get(j) > 50) image.setRGB(i, j, white.getRGB());
+				if(this.energy[i][j] > 50) image.setRGB(i, j, white.getRGB());
 				else image.setRGB(i, j, black.getRGB());
 				image.setRGB(vert[j], j, red.getRGB());
 			}
@@ -191,13 +204,13 @@ public class CarvingProcess{
 		}catch(Exception e){}
 	}
 
-	public void extractEnergy(int w, int h, List<List<Double>> energy){
+	public void extractEnergy(int w, int h, double[][] energy){
 		Color white = new Color(255,255,255);
 		Color black = new Color(0,0,0);
 		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		for( int i = 0; i < this.width; i++ ){
 			for( int j = 0; j < this.height; j++ ){
-				if(this.energy.get(i).get(j) > 50) image.setRGB(i, j, white.getRGB());
+				if(this.energy[i][j] > 50) image.setRGB(i, j, white.getRGB());
 				else image.setRGB(i, j, black.getRGB());
 			}
 		}
