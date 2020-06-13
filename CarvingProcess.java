@@ -19,12 +19,16 @@ public class CarvingProcess{
 		this.height = this.image.getHeight();
 		getEnergyTab();
 		extractEnergy(width, height, energy);
-		int[] horizontale = findHorizontalSeam();
+		
 		int[] vertical = findVerticalSeam();
-		extractHorizontale(horizontale);
-		extractVertical(vertical);
-		saveImage();
+		//extractHorizontale(horizontale);
+		//extractVertical(vertical);
 
+		for (int i=0; i < 150; i++) {
+			int[] horizontale = findHorizontalSeam();
+			removeHorizontal(horizontale);
+		}
+		save(nomFichier);
 	}
 
 
@@ -140,6 +144,55 @@ public class CarvingProcess{
 			}
 		}
 		return parcourt;
+	}
+
+	public void removeHorizontal(int[] hori){
+
+		BufferedImage new_image = new BufferedImage(this.width, this.height - 1, BufferedImage.TYPE_INT_RGB);
+
+		for (int i = 0; i < this.width; i++) {
+			boolean moveToNext = false;
+			for (int j = 0; j < this.height - 1; j++) {
+				if (hori[i] == j) {
+						moveToNext = true;
+					}
+					if(moveToNext)
+						new_image.setRGB(i, j, this.image.getRGB(i, j + 1));
+					else
+						new_image.setRGB(i, j, this.image.getRGB(i, j));
+			}
+		}
+		this.image = new_image;
+		this.height -= 1;
+		getEnergyTab();
+	}
+
+	public void removeVertical(int[] vert){
+
+		BufferedImage new_image = new BufferedImage(this.width - 1, this.height, BufferedImage.TYPE_INT_RGB);
+
+		for (int i = 0; i < this.height; i++) {
+			boolean moveToNext = false;
+			for (int j = 0; j < this.width - 1; j++) {
+				if (vert[i] == j) {
+						moveToNext = true;
+					}
+					if(moveToNext)
+						new_image.setRGB(i, j, this.image.getRGB(j + 1, i));
+					else
+						new_image.setRGB(i, j, this.image.getRGB(j, i));
+			}
+		}
+		this.image = new_image;
+		this.width -= 1;
+		getEnergyTab();
+	}
+
+	public void save(String fileName){
+		try{
+			File f = new File("resized_" + fileName);
+			ImageIO.write(image, "jpg", f);
+		}catch(Exception e){}
 	}
 
 
