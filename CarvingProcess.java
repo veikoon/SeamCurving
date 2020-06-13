@@ -1,3 +1,10 @@
+//########################################################################################
+//##						Vincent Monnot et Laurent Delatte							##
+//##						Actualisé le 13/06/2020 à 20h06								##
+//##						Projet Algorithmique ESIEE PARIS							##
+//##						Deuxième partie : Seam SeamCarving 							##
+//########################################################################################
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -20,13 +27,14 @@ public class CarvingProcess{
 		getEnergyTab();
 		extractEnergy(width, height, energy);
 		
-		int[] vertical = findVerticalSeam();
+		
+		int[] horizontale = findHorizontalSeam();
 		//extractHorizontale(horizontale);
 		//extractVertical(vertical);
 
-		for (int i=0; i < 150; i++) {
-			int[] horizontale = findHorizontalSeam();
-			removeHorizontal(horizontale);
+		for (int i=0; i < 100; i++) {
+			int[] vertical = findVerticalSeam();
+			removeVertical(vertical);
 		}
 		save(nomFichier);
 	}
@@ -178,9 +186,9 @@ public class CarvingProcess{
 						moveToNext = true;
 					}
 					if(moveToNext)
-						new_image.setRGB(i, j, this.image.getRGB(j + 1, i));
+						new_image.setRGB(j, i, this.image.getRGB(j + 1, i));
 					else
-						new_image.setRGB(i, j, this.image.getRGB(j, i));
+						new_image.setRGB(j, i, this.image.getRGB(j, i));
 			}
 		}
 		this.image = new_image;
