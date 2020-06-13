@@ -143,23 +143,6 @@ public class CarvingProcess{
 	}
 
 
-	public void saveImage(){
-
-
-
-		BufferedImage new_image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-		for (int i=0; i < 100; i++) {
-			for (int j=0; j < 100; j++) {
-				new_image.setRGB(i, j, this.image.getRGB(i, j));
-			}
-		}
-
-		try{
-			File f = new File("Finalcat.jpg");
-			ImageIO.write(new_image, "jpg", f);
-		}catch(Exception e){}
-	}
-
 
 //########################################################################################
 //##								Fonctions de Test 									##
