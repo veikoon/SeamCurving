@@ -1,0 +1,24 @@
+Grille des pucerons :
+3 1 2 4 5 
+1 72 3 6 6 
+89 27 10 12 3 
+46 2 8 7 15 
+36 34 1 13 30 
+2 4 11 26 66 
+1 10 15 1 2 
+2 4 3 9 6 
+
+Tableau M[L][C] de terme général M[l][c] = m(l,c) :
+279 277 278 149 145 
+205 276 145 140 140 
+204 142 124 134 125 
+115 71 98 114 122 
+64 69 51 90 107 
+16 28 35 50 77 
+5 14 24 10 11 
+2 4 3 9 6 
+
+La coccinelle a mangé 279 pucerons.
+Elle a suivi le chemin (0,3)(1,2)(2,2)(3,1)(4,0)(5,0)(6,1)(7,0)
+Case d’atterrisage = (0,3).
+Case de l’interview = (7,0).

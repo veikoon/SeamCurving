@@ -65,14 +65,14 @@ public class SeamCarving{
 		createEnergyTab();	// Initialisation du tableau d'énérgie
 
 		//extractEnergy();								//Permet d'enregistrer une image de l'energie
-		//extractHorizontale(findHorizontalSeam());		//Permet d'enregistrer une image de l'energie avec une 'ligne' horizontale
+		//extractHorizontal(findHorizontalSeam());		//Permet d'enregistrer une image de l'energie avec une 'ligne' horizontale
 		//extractVertical(findVerticalSeam());			//Permet d'enregistrer une image de l'energie avec une 'ligne' verticale
 
 		// Processus de suppression de ligne horizontales
 		System.out.print("\rHorizontal process : ");
 		for (int j=0; j < horizontalNumber; j++){
 			removeHorizontal(findHorizontalSeam());
-			 System.out.print("\rHorizontal process :    [" + j + "/" + horizontalNumber + "]" + "   / (°-°) \\");
+			 System.out.print("\rHorizontal process :    [" + j + "/" + (horizontalNumber - 1) + "]" + "   / (°-°) \\");
 		}
 
 		System.out.println("");
@@ -80,10 +80,13 @@ public class SeamCarving{
 		// Processus de suppression de ligne verticales
 		for (int i=0; i < verticalNumber; i++){
 			 removeVertical(findVerticalSeam());
-			 System.out.print("\rVertical process :      [" + i + "/" + verticalNumber + "]" + "   / (°-°) \\");
+			 System.out.print("\rVertical process :      [" + i + "/" + (verticalNumber - 1) + "]" + "   / (°-°) \\");
 		}		
 
-		save();		// Extraction et sauvegarde de l'image sous forme jpg
+
+		String[] fullPath = path.split("/");
+		String name = fullPath[fullPath.length - 1].substring(0, fullPath[fullPath.length - 1].lastIndexOf('.'));
+		save(name, percentHeight, percentWidth);		// Extraction et sauvegarde de l'image sous forme png
 		System.out.println("\n\nProcess done ! \\ (ᵔᵕᵔ) /");
 	}
 
@@ -295,7 +298,7 @@ public class SeamCarving{
 	*/
 	public void removeVertical(int[] vert){
 
-		// Confère détail de removeHorizontal() à ceci pret que l'on travail sur les colonnes et non les lignes
+		// Confère détail de removeHorizontal() à ceci près que l'on travail sur les colonnes et non les lignes
 		BufferedImage new_image = new BufferedImage(this.width - 1, this.height, BufferedImage.TYPE_INT_RGB);
 
 		for (int i = 0; i < this.height; i++) {
@@ -318,12 +321,13 @@ public class SeamCarving{
 	/**
 	* Procédure de sauvegarde de l'image tampon dans un fichier
 	*/
-	public void save(){
+	public void save(String fileName, float percentHeight, float percentWidth){
 		try{
-			File f = new File("resizedPicture.jpg");
-			ImageIO.write(image, "jpg", f);
+
+			File f = new File(fileName + "_resized_" + (int) percentHeight + "_" + (int) percentWidth + ".png");
+			ImageIO.write(image, "png", f);
 		}catch(IOException e){
-			System.out.println("ERROR : Can't write the image here : " + "resizedPicture.jpg");
+			System.out.println("ERROR : Can't write the image here : " + "resizedPicture.png");
 			System.out.println("Here is the error : -->\n");
 			e.printStackTrace();
 		}
@@ -337,8 +341,8 @@ public class SeamCarving{
 
 
 
-
-	public void extractHorizontale(int[] hori){
+/**
+	public void extractHorizontal(int[] hori){
 		Color white = new Color(255,255,255);
 		Color black = new Color(0,0,0);
 		Color red = new Color(255,0,0);
@@ -351,8 +355,8 @@ public class SeamCarving{
 			image.setRGB(i, hori[i], red.getRGB());
 		}
 		try{
-			File f = new File("testcathori.jpg");
-			ImageIO.write(image, "jpg", f);
+			File f = new File("testcathori.png");
+			ImageIO.write(image, "png", f);
 		}catch(Exception e){}
 	}
 
@@ -369,8 +373,8 @@ public class SeamCarving{
 			}
 		}
 		try{
-			File f = new File("testcatvert.jpg");
-			ImageIO.write(image, "jpg", f);
+			File f = new File("testcatvert.png");
+			ImageIO.write(image, "png", f);
 		}catch(Exception e){}
 	}
 
@@ -385,9 +389,10 @@ public class SeamCarving{
 			}
 		}
 		try{
-			File f = new File("testcat.jpg");
-			ImageIO.write(image, "jpg", f);
+			File f = new File("testcat.png");
+			ImageIO.write(image, "png", f);
 		}catch(Exception e){}
 	}
+*/
 
 }
